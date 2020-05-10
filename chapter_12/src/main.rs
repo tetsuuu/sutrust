@@ -1,8 +1,8 @@
 use std::fs;
 use std::fs::*;
 use std::fs::File;
-use std::io::Write;
-use std::io::Read;
+// use std::io::Write;
+// use std::io::Read;
 use std::io::{Read, Write, BufRead, BufReader, BufWriter};
 use std::env;
 
@@ -115,7 +115,9 @@ fn main() {
         let reader = BufReader::new(file);
         let mut writer = BufWriter::new(std::io::stdout());
         for it in reader.bytes() {
-            writer.write( &[*it] );
+            if let Ok(n) = it {
+                writer.write( &[n] );
+            }
         }
     }
 
@@ -125,7 +127,9 @@ fn main() {
         let reader = BufReader::new(std::io::stdin());
         let mut writer = BufWriter::new(std::io::stdout());
         for it in reader.bytes() {
-            writer.write( &[*it] );
+            if let Ok(n) = it {
+                writer.write( &[n] );
+            }
         }
     } else {
         let file = File::open( &args[1] )
@@ -133,7 +137,9 @@ fn main() {
         let reader = BufReader::new(file);
         let mut writer = BufWriter::new(std::io::stdout());
         for it in reader.bytes() {
-            writer.write( &[*it] );
+            if let Ok(n) = it {
+                writer.write( &[n] );
+            }
         }
     }
 
@@ -152,8 +158,10 @@ fn main() {
 
 fn do_print<R>( reader: BufReader<R>) where R: std::io::Read {
     let mut writer = BufWriter::new(std::io::stdout());
-    for it in reader.bytes() {
-        writer.write( &[*it] );
+    for i in reader.bytes() {
+        if let Ok(n) = i {
+            writer.write(&[n]);
+        }
     }
 }
 // main関数でファイルを読む
